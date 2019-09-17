@@ -27,4 +27,10 @@ litters_data = janitor :: clean_names(litters_data)
 
 ```
 
+```{r inclass practice I}
+Pupsdata_absolute = read_csv(file = "D:\\Desktop\\Courses\\P8105_Data Science\\Coding\\190917_DS_Coding\\190917inclass_data-wrangling\\FAS_pups.csv")
+Pupsdata_relative = read_csv(file = "FAS_pups.csv")
+
+```
+
 
