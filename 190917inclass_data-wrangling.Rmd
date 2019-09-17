@@ -1,0 +1,30 @@
+---
+title: "190917_inclass"
+author: "Gavin Ko"
+date: "9/17/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+```{r geting_directory}
+## there's two ways: absolute directory(path), person specific
+## relative path: direction starting from places familiar, main spots
+## relative path is strongly recommended
+getwd()
+
+```
+
+```{r load in a dataset}
+litters_data = read_csv(file = "./FAS_litters.csv")
+
+#clean up the names with janitor package
+litters_data = janitor :: clean_names(litters_data)
+
+```
+
+
