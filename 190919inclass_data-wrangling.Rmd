@@ -1,0 +1,102 @@
+---
+title: "190919_inclass"
+author: "Gavin Ko"
+date: "9/19/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library and load datasets}
+
+library(tidyverse)
+litters_data = read.csv("FAS_litters.csv")
+
+pups_data = read.csv("FAS_pups.csv")
+
+```
+select and mutate is useful in selecting those interested variable.
+
+```{r janitor for label names cleaning}
+litters_data = janitor::clean_names(litters_data)
+pull(litters_data, group)
+```
+
+R doesn't know what's inside a dataset. We need to tell them where to look.
+
+Now then, practice select.
+
+First one variable is the dataset, from the second you can start sorting whatever you want.
+
+```{r selection}
+select(litters_data, litter_number, group, gd0_weight)
+
+```
+
+everything() serve as the function to list everything else then designated.
+```{r selection for all}
+select(litters_data, litter_number, everything() )
+```
+
+if you put minus sign in front of a variable, it means that you're excluding it from the dataset. 
+```{r selection except}
+select(litters_data, -litter_number)
+```
+
+You can even indicate the coverage like excel format.
+```{r selection for some}
+select(litters_data, litter_number, gd0_weight:pups_born_alive)
+```
+
+do notice that the selection function dosen't change the original dataset, unless you assign a new one.
+
+You can also rename the labels during the process. Put the new name you want on the left.
+If you only put rename inside, it doesn't change the data sequence.
+```{r}
+select(litters_data, GROuP = group, litter_number)
+select(litters_data, GROUP = group)
+```
+
+
+Secondly, let's move on to filter. Filter serves as conditional selection.
+
+```{r}
+filter(litters_data, group == "Con7")
+```
+
+With filter, you can give all kinds of logical function.
+Simply add the multiple filterations by adding it after comma.
+Second line of writing or condition is better, since "|" cause some compiling trouble sometimes.
+
+```{r mischellaneous}
+filter(litters_data, pups_born_alive < 6 , group == "Con7")
+filter(litters_data, group %in% c("Con7", "Con8") )
+filter(litters_data, pups_born_alive <= 6, pups_born_alive >= 4)
+filter(litters_data, gd0_weight + gd18_weight >= 70)
+#don't do this :filter(litters_data, !is.na(gd0_weight))
+droup_na(litters_data) # droup all rows with any single na
+drop_na(litters_data, gd0_weight) #only focus on the selected column
+```
+
+Alright, let's do mutate right now.
+
+Note that mutate is inreversable changes.
+```{r mutate}
+mutate(litters_data, 
+       wt_gain = gd18_weight - gd0_weight, #add new column
+       group = str_to_lower(group) #change the variable value; character to lower case
+       )
+```
+
+Finally, go on to arrange. It's most of the time for double checking the data if there's anything unexpected or wrong. desc() indicates reverse order.
+```{r arrange}
+arrange(litters_data, desc( pups_born_alive) )
+
+arrange(litters_data, pups_born_alive, gd0weight)
+#multiple clusters, what goes first, filtered the first.
+
+```
+
+
