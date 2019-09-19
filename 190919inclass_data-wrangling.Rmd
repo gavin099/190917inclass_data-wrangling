@@ -99,4 +99,40 @@ arrange(litters_data, pups_born_alive, gd0weight)
 
 ```
 
+# Pipe!
+
+Create a collection of commands.
+See that chunck of codes on course website.
+There's a whole bunch of intermediate variable right? A huge mess.
+Nest approach can solve this problem SOMEHOW, but not really.
+ctrl + shift + M is the hot key for %>% 
+
+```{r pipe practice}
+litters_data = 
+  read.csv("FAS_litters.csv") %>% 
+  janitor::clean_names() %>% #don't worry about selecting that stuff you're working on. R  just knows if you're using pipe.
+  select(-pups_survive) %>%
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group) ) %>% 
+  drop_na(gd0_weight)
+
+```
+There's more you can do with pipes.
+
+```{r pipes operation}
+litters_data %>% view()
+litters_data %>% pull(gd0_weight) %>% mean()
+```
+
+In pipe, .equals to whatever the last one in command.
+
+```{r}
+litters_data = 
+  read.csv("FAS_litters.csv") %>% 
+  janitor::clean_names(data = .) %>% 
+  select(.data = ., -pups_survuve) %>%  #.data is just the syntax of data = 
+  lm(gd0_weight ~ gd18_weight)
+```
+
 
