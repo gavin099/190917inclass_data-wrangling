@@ -1,0 +1,78 @@
+---
+title: "190924_inclass"
+author: "Gavin Ko"
+date: "9/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r install the new version of tidyr}
+install.packages("tidyr")
+```
+
+```{r read data}
+pulse_data = haven::read_sas("public_pulse_data.sas7bdat") %>% 
+  janitor::clean_names()
+```
+
+```{r wide to long}
+pivot_longer(pulse_data, 
+             bdi_score_bl : bdi_score_12m,
+             names_to = "visit",
+             values_to = "bdi")
+```
+
+pivot longer once got it name as "gather", not anymore.
+
+```{r put all of this together}
+pulse_data = haven::read_sas("public_pulse_data.sas7bdat") %>% 
+  janitor::clean_names() %>% 
+    pivot_longer(bdi_score_bl : bdi_score_12m,
+                 names_to = "visit",
+                 names_prefix = "bdi_score_",
+                 values_to = "bdi"
+    ) %>% 
+    mutate(
+      visit = recode(visit, "b1" = "00m")
+    ) %>% view
+
+```
+
+Now, let's move on to next dataframe.
+
+```{r litter data}
+litters_data = 
+  read_csv("FAS_litters.csv") %>% 
+  janitor :: clean_names() %>% 
+  separate(col = group, into = c("dose", "dat_of_tx"), 3) %>% 
+  mutate(  
+    dose = str_to_lower(dose)
+)
+
+```
+
+How about untidy the data into human readible form?
+
+```{r create data frame}
+analysis_result = tibble(
+  group = c("treatment", "treatment", "placebo", "placebo"),
+  time = c("pre", "post", "pre", "post"),
+  mean = c(4, 8, 3.5, 4)
+)
+```
+
+```{r widen the data}
+pivot_wider(analysis_result,
+  names_from = time,
+  values_from = mean
+)
+
+```
+
+
+
+

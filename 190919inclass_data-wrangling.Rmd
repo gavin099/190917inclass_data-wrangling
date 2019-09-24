@@ -128,7 +128,7 @@ litters_data %>% pull(gd0_weight) %>% mean()
 In pipe, .equals to whatever the last one in command.
 
 ```{r}
-litters_data = 
+litter s_data = 
   read.csv("FAS_litters.csv") %>% 
   janitor::clean_names(data = .) %>% 
   select(.data = ., -pups_survuve) %>%  #.data is just the syntax of data = 
